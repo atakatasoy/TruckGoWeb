@@ -570,18 +570,22 @@ namespace TruckGoWeb.Controllers.API
                                 MessageOwner = m.UserID == requesterUser.UserID ? requesterUser.NameSurname : companyName,
                                 m.IsSound
                             }).ToListAsync();
-                            messagesList.ForEach(message =>
-                            {
-                                if (message.IsSound)
-                                {
-                                    message = new
-                                    {
-                                        MessageContent = Convert.ToBase64String(File.ReadAllBytes(mainPath + "/" + message.MessageContent + ".wav")),
-                                        message.MessageOwner,
-                                        message.IsSound
-                                    };
-                                }
-                            });
+
+                            //
+                            // Sending the voices directly
+                            //
+                            //messagesList.ForEach(message =>
+                            //{
+                            //    if (message.IsSound)
+                            //    {
+                            //        message = new
+                            //        {
+                            //            MessageContent = Convert.ToBase64String(File.ReadAllBytes(mainPath + "/" + message.MessageContent + ".wav")),
+                            //            message.MessageOwner,
+                            //            message.IsSound
+                            //        };
+                            //    }
+                            //});
                         }
                         else
                         {
