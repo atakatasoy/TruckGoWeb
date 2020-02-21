@@ -1,0 +1,746 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TruckGoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Atc">
+          <Key>
+            <PropertyRef Name="AtcID" />
+          </Key>
+          <Property Name="AtcID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehicleID" Type="int" Nullable="false" />
+          <Property Name="Latitude" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Longitude" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Speed" Type="decimal" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="Altitude" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Accuracy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Angle" Type="decimal" Precision="10" Scale="6" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ResponsibleUserID" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ContactInfo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="State" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Errors">
+          <Key>
+            <PropertyRef Name="ErrorID" />
+          </Key>
+          <Property Name="ErrorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ResponseText" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Parameters" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MessageRooms">
+          <Key>
+            <PropertyRef Name="MessageRoomID" />
+          </Key>
+          <Property Name="MessageRoomID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DriverUserID" Type="int" Nullable="false" />
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="State" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="MessageID" />
+          </Key>
+          <Property Name="MessageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageRoomID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="MessageContent" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="Opened" Type="bit" Nullable="false" />
+          <Property Name="IsSound" Type="bit" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="State" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserType" Type="int" Nullable="false" />
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="NameSurname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccessToken" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Userpass" Type="nvarchar" MaxLength="88" Nullable="false" />
+          <Property Name="Salt" Type="nvarchar" MaxLength="55" Nullable="false" />
+          <Property Name="ContactInfo" Type="nvarchar" MaxLength="10" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="State" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserTypes">
+          <Key>
+            <PropertyRef Name="UserTypeID" />
+          </Key>
+          <Property Name="UserTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserTypeExplanation" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vehicles">
+          <Key>
+            <PropertyRef Name="VehicleID" />
+          </Key>
+          <Property Name="VehicleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="LicensePlate" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="State" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Warnings">
+          <Key>
+            <PropertyRef Name="WarningID" />
+          </Key>
+          <Property Name="WarningID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WarningContent" Type="nvarchar" MaxLength="80" />
+        </EntityType>
+        <Association Name="FK_Atc_Vehicles">
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="1" />
+          <End Role="Atc" Type="Self.Atc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Atc">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Companies_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Companies" Type="Self.Companies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Companies">
+              <PropertyRef Name="ResponsibleUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Errors_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Errors" Type="Self.Errors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Errors">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageRooms_Companies">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="MessageRooms" Type="Self.MessageRooms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="MessageRooms">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageRooms_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="MessageRooms" Type="Self.MessageRooms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="MessageRooms">
+              <PropertyRef Name="DriverUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_MessageRooms">
+          <End Role="MessageRooms" Type="Self.MessageRooms" Multiplicity="1" />
+          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageRooms">
+              <PropertyRef Name="MessageRoomID" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="MessageRoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Companies">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_UserTypes">
+          <End Role="UserTypes" Type="Self.UserTypes" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTypes">
+              <PropertyRef Name="UserTypeID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Companies">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TruckGoModelStoreContainer">
+          <EntitySet Name="Atc" EntityType="Self.Atc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Errors" EntityType="Self.Errors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MessageRooms" EntityType="Self.MessageRooms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Warnings" EntityType="Self.Warnings" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Atc_Vehicles" Association="Self.FK_Atc_Vehicles">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="Atc" EntitySet="Atc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Companies_Users" Association="Self.FK_Companies_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Companies" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Errors_Users" Association="Self.FK_Errors_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Errors" EntitySet="Errors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageRooms_Companies" Association="Self.FK_MessageRooms_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="MessageRooms" EntitySet="MessageRooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageRooms_Users" Association="Self.FK_MessageRooms_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="MessageRooms" EntitySet="MessageRooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_MessageRooms" Association="Self.FK_Messages_MessageRooms">
+            <End Role="MessageRooms" EntitySet="MessageRooms" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_Users" Association="Self.FK_Messages_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Companies" Association="Self.FK_Users_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_UserTypes" Association="Self.FK_Users_UserTypes">
+            <End Role="UserTypes" EntitySet="UserTypes" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Companies" Association="Self.FK_Vehicles_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Users" Association="Self.FK_Vehicles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TruckGoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TruckGoEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Atc" EntityType="TruckGoModel.Atc" />
+          <EntitySet Name="Companies" EntityType="TruckGoModel.Companies" />
+          <EntitySet Name="MessageRooms" EntityType="TruckGoModel.MessageRooms" />
+          <EntitySet Name="Messages" EntityType="TruckGoModel.Messages" />
+          <EntitySet Name="Users" EntityType="TruckGoModel.Users" />
+          <EntitySet Name="UserTypes" EntityType="TruckGoModel.UserTypes" />
+          <EntitySet Name="Vehicles" EntityType="TruckGoModel.Vehicles" />
+          <EntitySet Name="Warnings" EntityType="TruckGoModel.Warnings" />
+          <AssociationSet Name="FK_Atc_Vehicles" Association="TruckGoModel.FK_Atc_Vehicles">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="Atc" EntitySet="Atc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Companies_Users" Association="TruckGoModel.FK_Companies_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Companies" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageRooms_Companies" Association="TruckGoModel.FK_MessageRooms_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="MessageRooms" EntitySet="MessageRooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Companies" Association="TruckGoModel.FK_Users_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Companies" Association="TruckGoModel.FK_Vehicles_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageRooms_Users" Association="TruckGoModel.FK_MessageRooms_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="MessageRooms" EntitySet="MessageRooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_MessageRooms" Association="TruckGoModel.FK_Messages_MessageRooms">
+            <End Role="MessageRooms" EntitySet="MessageRooms" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_Users" Association="TruckGoModel.FK_Messages_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_UserTypes" Association="TruckGoModel.FK_Users_UserTypes">
+            <End Role="UserTypes" EntitySet="UserTypes" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Users" Association="TruckGoModel.FK_Vehicles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <EntitySet Name="Errors" EntityType="TruckGoModel.Errors" />
+          <AssociationSet Name="FK_Errors_Users" Association="TruckGoModel.FK_Errors_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Errors" EntitySet="Errors" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Atc">
+          <Key>
+            <PropertyRef Name="AtcID" />
+          </Key>
+          <Property Name="AtcID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleID" Type="Int32" Nullable="false" />
+          <Property Name="Latitude" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Longitude" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Speed" Type="Decimal" Nullable="false" Precision="3" Scale="0" />
+          <Property Name="Altitude" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Accuracy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Angle" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Vehicles" Relationship="TruckGoModel.FK_Atc_Vehicles" FromRole="Atc" ToRole="Vehicles" />
+        </EntityType>
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ResponsibleUserID" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ContactInfo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="State" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="TruckGoModel.FK_Companies_Users" FromRole="Companies" ToRole="Users" />
+          <NavigationProperty Name="MessageRooms" Relationship="TruckGoModel.FK_MessageRooms_Companies" FromRole="Companies" ToRole="MessageRooms" />
+          <NavigationProperty Name="Users1" Relationship="TruckGoModel.FK_Users_Companies" FromRole="Companies" ToRole="Users" />
+          <NavigationProperty Name="Vehicles" Relationship="TruckGoModel.FK_Vehicles_Companies" FromRole="Companies" ToRole="Vehicles" />
+        </EntityType>
+        <EntityType Name="MessageRooms">
+          <Key>
+            <PropertyRef Name="MessageRoomID" />
+          </Key>
+          <Property Name="MessageRoomID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DriverUserID" Type="Int32" Nullable="false" />
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Companies" Relationship="TruckGoModel.FK_MessageRooms_Companies" FromRole="MessageRooms" ToRole="Companies" />
+          <NavigationProperty Name="Users" Relationship="TruckGoModel.FK_MessageRooms_Users" FromRole="MessageRooms" ToRole="Users" />
+          <NavigationProperty Name="Messages" Relationship="TruckGoModel.FK_Messages_MessageRooms" FromRole="MessageRooms" ToRole="Messages" />
+        </EntityType>
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="MessageID" />
+          </Key>
+          <Property Name="MessageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageRoomID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="MessageContent" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Opened" Type="Boolean" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="State" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MessageRooms" Relationship="TruckGoModel.FK_Messages_MessageRooms" FromRole="Messages" ToRole="MessageRooms" />
+          <NavigationProperty Name="Users" Relationship="TruckGoModel.FK_Messages_Users" FromRole="Messages" ToRole="Users" />
+          <Property Name="IsSound" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="NameSurname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccessToken" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Userpass" Type="String" Nullable="false" MaxLength="88" FixedLength="false" Unicode="true" />
+          <Property Name="Salt" Type="String" Nullable="false" MaxLength="55" FixedLength="false" Unicode="true" />
+          <Property Name="ContactInfo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="State" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Companies" Relationship="TruckGoModel.FK_Companies_Users" FromRole="Users" ToRole="Companies" />
+          <NavigationProperty Name="Companies1" Relationship="TruckGoModel.FK_Users_Companies" FromRole="Users" ToRole="Companies" />
+          <NavigationProperty Name="MessageRooms" Relationship="TruckGoModel.FK_MessageRooms_Users" FromRole="Users" ToRole="MessageRooms" />
+          <NavigationProperty Name="Messages" Relationship="TruckGoModel.FK_Messages_Users" FromRole="Users" ToRole="Messages" />
+          <NavigationProperty Name="UserTypes" Relationship="TruckGoModel.FK_Users_UserTypes" FromRole="Users" ToRole="UserTypes" />
+          <NavigationProperty Name="Vehicles" Relationship="TruckGoModel.FK_Vehicles_Users" FromRole="Users" ToRole="Vehicles" />
+          <NavigationProperty Name="Errors" Relationship="TruckGoModel.FK_Errors_Users" FromRole="Users" ToRole="Errors" />
+        </EntityType>
+        <EntityType Name="UserTypes">
+          <Key>
+            <PropertyRef Name="UserTypeID" />
+          </Key>
+          <Property Name="UserTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserTypeExplanation" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="TruckGoModel.FK_Users_UserTypes" FromRole="UserTypes" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Vehicles">
+          <Key>
+            <PropertyRef Name="VehicleID" />
+          </Key>
+          <Property Name="VehicleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="LicensePlate" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="State" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Atc" Relationship="TruckGoModel.FK_Atc_Vehicles" FromRole="Vehicles" ToRole="Atc" />
+          <NavigationProperty Name="Companies" Relationship="TruckGoModel.FK_Vehicles_Companies" FromRole="Vehicles" ToRole="Companies" />
+          <NavigationProperty Name="Users" Relationship="TruckGoModel.FK_Vehicles_Users" FromRole="Vehicles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Warnings">
+          <Key>
+            <PropertyRef Name="WarningID" />
+          </Key>
+          <Property Name="WarningID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WarningContent" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Atc_Vehicles">
+          <End Type="TruckGoModel.Vehicles" Role="Vehicles" Multiplicity="1" />
+          <End Type="TruckGoModel.Atc" Role="Atc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Atc">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Companies_Users">
+          <End Type="TruckGoModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TruckGoModel.Companies" Role="Companies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Companies">
+              <PropertyRef Name="ResponsibleUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageRooms_Companies">
+          <End Type="TruckGoModel.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="TruckGoModel.MessageRooms" Role="MessageRooms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="MessageRooms">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Companies">
+          <End Type="TruckGoModel.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="TruckGoModel.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Companies">
+          <End Type="TruckGoModel.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="TruckGoModel.Vehicles" Role="Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageRooms_Users">
+          <End Type="TruckGoModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TruckGoModel.MessageRooms" Role="MessageRooms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="MessageRooms">
+              <PropertyRef Name="DriverUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_MessageRooms">
+          <End Type="TruckGoModel.MessageRooms" Role="MessageRooms" Multiplicity="1" />
+          <End Type="TruckGoModel.Messages" Role="Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageRooms">
+              <PropertyRef Name="MessageRoomID" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="MessageRoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_Users">
+          <End Type="TruckGoModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TruckGoModel.Messages" Role="Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_UserTypes">
+          <End Type="TruckGoModel.UserTypes" Role="UserTypes" Multiplicity="1" />
+          <End Type="TruckGoModel.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTypes">
+              <PropertyRef Name="UserTypeID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Users">
+          <End Type="TruckGoModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TruckGoModel.Vehicles" Role="Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Errors">
+          <Key>
+            <PropertyRef Name="ErrorID" />
+          </Key>
+          <Property Name="ErrorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResponseText" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Parameters" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="TruckGoModel.FK_Errors_Users" FromRole="Errors" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_Errors_Users">
+          <End Type="TruckGoModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TruckGoModel.Errors" Role="Errors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Errors">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TruckGoModelStoreContainer" CdmEntityContainer="TruckGoEntities" >
+          <EntitySetMapping Name="Atc">
+            <EntityTypeMapping TypeName="TruckGoModel.Atc">
+              <MappingFragment StoreEntitySet="Atc">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Angle" ColumnName="Angle" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
+                <ScalarProperty Name="Altitude" ColumnName="Altitude" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="AtcID" ColumnName="AtcID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="TruckGoModel.Companies">
+              <MappingFragment StoreEntitySet="Companies">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ContactInfo" ColumnName="ContactInfo" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ResponsibleUserID" ColumnName="ResponsibleUserID" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageRooms">
+            <EntityTypeMapping TypeName="TruckGoModel.MessageRooms">
+              <MappingFragment StoreEntitySet="MessageRooms">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="DriverUserID" ColumnName="DriverUserID" />
+                <ScalarProperty Name="MessageRoomID" ColumnName="MessageRoomID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="TruckGoModel.Messages">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="IsSound" ColumnName="IsSound" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Opened" ColumnName="Opened" />
+                <ScalarProperty Name="MessageContent" ColumnName="MessageContent" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="MessageRoomID" ColumnName="MessageRoomID" />
+                <ScalarProperty Name="MessageID" ColumnName="MessageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TruckGoModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ContactInfo" ColumnName="ContactInfo" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="Userpass" ColumnName="Userpass" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+                <ScalarProperty Name="NameSurname" ColumnName="NameSurname" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTypes">
+            <EntityTypeMapping TypeName="TruckGoModel.UserTypes">
+              <MappingFragment StoreEntitySet="UserTypes">
+                <ScalarProperty Name="UserTypeExplanation" ColumnName="UserTypeExplanation" />
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehicles">
+            <EntityTypeMapping TypeName="TruckGoModel.Vehicles">
+              <MappingFragment StoreEntitySet="Vehicles">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Warnings">
+            <EntityTypeMapping TypeName="TruckGoModel.Warnings">
+              <MappingFragment StoreEntitySet="Warnings">
+                <ScalarProperty Name="WarningContent" ColumnName="WarningContent" />
+                <ScalarProperty Name="WarningID" ColumnName="WarningID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Errors">
+            <EntityTypeMapping TypeName="TruckGoModel.Errors">
+              <MappingFragment StoreEntitySet="Errors">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Parameters" ColumnName="Parameters" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ResponseText" ColumnName="ResponseText" />
+                <ScalarProperty Name="ErrorID" ColumnName="ErrorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
